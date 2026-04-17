@@ -28,8 +28,16 @@ jobs:
           node-version: 20
           cache: npm
 
+      - name: 清理受污染的 lockfile
+        run: |
+          rm -f package-lock.json
+          rm -rf node_modules
+
+      - name: 切换到官方 npm 源
+        run: npm config set registry https://registry.npmjs.org/
+
       - name: 安装依赖
-        run: npm install
+        run: npm install --registry=https://registry.npmjs.org/
 
       - name: 构建项目
         run: npm run build
