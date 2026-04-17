@@ -1,0 +1,42 @@
+ZhiPuGuZhou/
+├─ .github/
+│  └─ workflows/
+│     └─ deploy.yml
+├─ public/
+│  └─ oh-cards/
+│     ├─ 1.jpeg
+│     ├─ 2.jpeg
+│     ├─ 3.jpeg
+│     ├─ 4.jpeg
+│     ├─ 5.jpeg
+│     ├─ 6.jpeg
+│     ├─ 7.jpeg
+│     ├─ 8.jpeg
+│     ├─ 9.jpeg
+│     └─ 10.jpeg
+├─ src/
+│  ├─ components/
+│  │  ├─ layout.jsx
+│  │  ├─ modals.jsx
+│  │  └─ ui.jsx
+│  ├─ data/
+│  │  ├─ appData.js
+│  │  └─ ohQuestionBank.js
+│  ├─ pages/
+│  │  ├─ assessment.jsx
+│  │  ├─ chat.jsx
+│  │  ├─ dashboard.jsx
+│  │  ├─ record.jsx
+│  │  ├─ space.jsx
+│  │  └─ startup.jsx
+│  ├─ utils/
+│  │  └─ ohCardUtils.js
+│  ├─ App.jsx
+│  ├─ index.css
+│  └─ main.jsx
+├─ .gitignore
+├─ index.html
+├─ package.json
+├─ README.md
+├─ vite.config.js
+└─ 目录结构.txt
