@@ -124,6 +124,8 @@ export function OhCardModal({ open, onClose, onConfirm }) {
                               <img
                                 src={getCardImageUrl(card.image)}
                                 alt={card.title}
+                                loading="lazy"
+                                decoding="async"
                                 className="aspect-[5/7] w-full object-cover"
                               />
                             </div>
@@ -158,6 +160,8 @@ export function OhCardModal({ open, onClose, onConfirm }) {
                         <img
                           src={getCardImageUrl(picked.image)}
                           alt={picked.title}
+                          loading="lazy"
+                          decoding="async"
                           className="aspect-[5/7] w-full object-cover"
                         />
                         <div className="absolute left-4 top-4 rounded-full bg-white/88 px-3 py-1 text-xs text-slate-600 shadow-sm">

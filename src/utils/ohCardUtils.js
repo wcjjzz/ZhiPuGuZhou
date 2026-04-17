@@ -42,26 +42,37 @@ function canLoadImage(src) {
 
 // 自动扫描 public/oh-cards 下的图片
 // 支持 1.jpeg / 2.jpg / 3.png / 4.webp 这类命名
-export async function discoverOhCards(maxCount = 80) {
+export async function discoverOhCards(maxCount = 80, maxConsecutiveMisses = 5) {
   const extensions = ['jpeg', 'jpg', 'png', 'webp']
+  const foundCards = []
+  let consecutiveMisses = 0
 
-  const tasks = Array.from({ length: maxCount }, (_, index) => index + 1).map(async (id) => {
+  for (let id = 1; id <= maxCount; id += 1) {
+    let foundForThisId = null
+
     for (const ext of extensions) {
       const relativePath = `oh-cards/${id}.${ext}`
       const fullPath = getCardImageUrl(relativePath)
       const exists = await canLoadImage(fullPath)
 
       if (exists) {
-        return { id, image: relativePath }
+        foundForThisId = { id, image: relativePath }
+        break
       }
     }
 
-    return null
-  })
+    if (foundForThisId) {
+      foundCards.push(foundForThisId)
+      consecutiveMisses = 0
+    } else {
+      consecutiveMisses += 1
 
-  const foundCards = (await Promise.all(tasks))
-    .filter(Boolean)
-    .sort((a, b) => a.id - b.id)
+      // 连续若干个编号都不存在，就提前停止扫描
+      if (consecutiveMisses >= maxConsecutiveMisses) {
+        break
+      }
+    }
+  }
 
   // 如果没有扫描到，就回退到 appData.js 中的默认 10 张
   if (foundCards.length === 0) {
