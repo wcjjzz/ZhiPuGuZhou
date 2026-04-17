@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, BellRing, MessageCircleHeart, Phone, ShieldCheck, Sparkles, Wand2 } from 'lucide-react'
 import { SoftButton, Tag } from './ui'
