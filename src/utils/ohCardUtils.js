@@ -1,3 +1,4 @@
+import { ohCards } from '../data/appData'
 import { ohQuestionBank } from '../data/ohQuestionBank'
 
 // 随机抽取一组问题，避免每次都完全一样
@@ -15,5 +16,67 @@ export function samplePromptSet(direction, count = 2) {
 
 // 兼容 GitHub Pages base 路径
 export function getCardImageUrl(relativePath) {
+  if (!relativePath) return ''
+
+  // 已经是完整地址或 base64 时，直接返回
+  if (
+    relativePath.startsWith('http://') ||
+    relativePath.startsWith('https://') ||
+    relativePath.startsWith('data:')
+  ) {
+    return relativePath
+  }
+
   return `${import.meta.env.BASE_URL}${relativePath}`
+}
+
+// 检查某张图片是否真实存在
+function canLoadImage(src) {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => resolve(true)
+    img.onerror = () => resolve(false)
+    img.src = src
+  })
+}
+
+// 自动扫描 public/oh-cards 下的图片
+// 支持 1.jpeg / 2.jpg / 3.png / 4.webp 这类命名
+export async function discoverOhCards(maxCount = 80) {
+  const extensions = ['jpeg', 'jpg', 'png', 'webp']
+
+  const tasks = Array.from({ length: maxCount }, (_, index) => index + 1).map(async (id) => {
+    for (const ext of extensions) {
+      const relativePath = `oh-cards/${id}.${ext}`
+      const fullPath = getCardImageUrl(relativePath)
+      const exists = await canLoadImage(fullPath)
+
+      if (exists) {
+        return { id, image: relativePath }
+      }
+    }
+
+    return null
+  })
+
+  const foundCards = (await Promise.all(tasks))
+    .filter(Boolean)
+    .sort((a, b) => a.id - b.id)
+
+  // 如果没有扫描到，就回退到 appData.js 中的默认 10 张
+  if (foundCards.length === 0) {
+    return ohCards
+  }
+
+  // 复用 appData.js 里已有的分类与配色，超过 10 张时循环使用
+  return foundCards.map((item, index) => {
+    const template = ohCards[index % ohCards.length]
+
+    return {
+      ...template,
+      id: item.id,
+      title: `OH 卡 ${item.id}`,
+      image: item.image,
+    }
+  })
 }
