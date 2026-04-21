@@ -1,4 +1,4 @@
-# 智愈孤舟（ZhiPuGuZhou）
+# 智愈孤舟（ZhiYuGuZhou）
 
 一个基于 **Vite + React + Tailwind CSS + Framer Motion** 的电脑 Web 端高保真交互原型。
 
